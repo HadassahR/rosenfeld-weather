@@ -15,6 +15,8 @@ public class OpenWeatherMapController {
     @FXML
     TableColumn tempColumn;
 
+    @FXML
+    TableColumn locationColumn;
 
     @FXML
     TableView<OpenWeatherMapFeed.Main> tableView;
@@ -22,7 +24,7 @@ public class OpenWeatherMapController {
     @FXML
     public void initialize() {
 
-        tempColumn.setCellValueFactory(new PropertyValueFactory<OpenWeatherMapFeed.Main, String>("time"));
+        tempColumn.setCellValueFactory(new PropertyValueFactory<OpenWeatherMapFeed.Main, String>("temp"));
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://openweathermap.org/")
@@ -32,7 +34,7 @@ public class OpenWeatherMapController {
 
         OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
 
-        Disposable disposable = service.getCurrentWeather("Passaic")
+        Disposable disposable = service.getCurrentWeather("Passaic, NJ")
                 // request the data in the background
                 .subscribeOn(Schedulers.io())
                 // work with the data in the foreground
@@ -42,7 +44,7 @@ public class OpenWeatherMapController {
     }
 
     public void onOpenWeatherMapFeed(OpenWeatherMapFeed feed) {
-        tableView.getItems().setAll(feed.mainProps);
+        tableView.getItems().setAll(feed.mains);
         tableView.refresh();
     }
 
