@@ -11,7 +11,7 @@
             fx:controller="rosenfeld.openweathermap.OpenWeatherMapController"
             prefHeight="800.0" prefWidth="600.0">
 
-    <TableView fx:id="tableView" prefHeight="800.0" prefWidth="600.0">
+    <TableView fx:id="tableView" prefHeight="400" prefWidth="400">
         <columns>
             <TableColumn text="Location" fx:id="locationColumn"/>
             <TableColumn text="Temperature" fx:id="tempColumn"/>

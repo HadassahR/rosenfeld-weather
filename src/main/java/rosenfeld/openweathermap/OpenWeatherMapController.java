@@ -25,6 +25,7 @@ public class OpenWeatherMapController {
     public void initialize() {
 
         tempColumn.setCellValueFactory(new PropertyValueFactory<OpenWeatherMapFeed.Main, String>("temp"));
+        locationColumn.setCellValueFactory(new PropertyValueFactory<OpenWeatherMapFeed.Main, String>("location"));
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://openweathermap.org/")
@@ -34,7 +35,7 @@ public class OpenWeatherMapController {
 
         OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
 
-        Disposable disposable = service.getCurrentWeather("Passaic, NJ")
+        Disposable disposable = service.getCurrentWeather("New York")
                 // request the data in the background
                 .subscribeOn(Schedulers.io())
                 // work with the data in the foreground
@@ -44,7 +45,7 @@ public class OpenWeatherMapController {
     }
 
     public void onOpenWeatherMapFeed(OpenWeatherMapFeed feed) {
-        tableView.getItems().setAll(feed.mains);
+        tableView.getItems().setAll(feed.main);
         tableView.refresh();
     }
 

@@ -14,7 +14,7 @@ public class OpenWeatherMapApplication extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/weather_application.fxml"));
 
         Parent parent = loader.load();
-        Scene scene = new Scene(parent, 600, 800);
+        Scene scene = new Scene(parent, 400, 400);
 
         stage.setTitle("Open Weather Map");
         stage.setScene(scene);

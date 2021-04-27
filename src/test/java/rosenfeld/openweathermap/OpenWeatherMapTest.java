@@ -23,16 +23,14 @@ public class OpenWeatherMapTest {
 
         OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
 
-        Single<OpenWeatherMapFeed> single = service.getCurrentWeather("Passaic, NJ");
+        Single<OpenWeatherMapFeed> single = service.getCurrentWeather("New York");
         //DO NOT USE BLOCKING GET
         OpenWeatherMapFeed feed = single.blockingGet();
 
         // then
         assertNotNull(feed);
-        assertNotNull(feed.mains);
-        assertFalse(feed.mains.isEmpty());
-        assertNotNull(feed.mains.get(0).properties);
-        assertTrue(feed.mains.get(0).properties.temp > 0);
+        assertNotNull(feed.main);
+        assertFalse(feed.main.toString().isEmpty());
     }
 
 
