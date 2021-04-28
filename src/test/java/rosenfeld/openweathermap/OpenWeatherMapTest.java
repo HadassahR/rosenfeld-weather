@@ -15,22 +15,39 @@ public class OpenWeatherMapTest {
     public void getCurrentWeather(){
 
         // given
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://openweathermap.org/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
-                .build();
+        OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
+        OpenWeatherMapService service = factory.newInstance();
 
-        OpenWeatherMapService service = retrofit.create(OpenWeatherMapService.class);
-
-        Single<OpenWeatherMapFeed> single = service.getCurrentWeather("New York");
-        //DO NOT USE BLOCKING GET
-        OpenWeatherMapFeed feed = single.blockingGet();
+        // when
+        OpenWeatherMapFeed feed = service.getCurrentWeather("New York", "imperial")
+                .blockingGet();
 
         // then
         assertNotNull(feed);
         assertNotNull(feed.main);
-        assertFalse(feed.main.toString().isEmpty());
+        assertEquals("New York", feed.name);
+        assertTrue(feed.main.temp > 0);
+        assertTrue(feed.main.temp < 150); // testing that is in imperial
+        assertTrue(feed.dt > 0); // checking that date is coming in
+    }
+
+    @Test
+    public void getWeatherForecast(){
+
+        // given
+        OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
+        OpenWeatherMapService service = factory.newInstance();
+
+        //when
+        OpenWeatherMapForecast forecast = service.getWeatherForecast("New York", "imperial")
+                .blockingGet();
+
+        // then
+        assertNotNull(forecast);
+        assertNotNull(forecast.list);
+        assertFalse(forecast.list.isEmpty());
+        assertTrue(forecast.list.get(0).dt > 0);
+        assertNotNull(forecast.list.get(0).weather);
     }
 
 
