@@ -9,8 +9,8 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class OpenWeatherMapControllerTest {
 
@@ -58,12 +58,88 @@ public class OpenWeatherMapControllerTest {
     }
 
     @Test
-    public void onOpenWeatherMapFeed() {
+    public void metricUnits_getWeather() {
+        // given
+        givenOpenWeatherMapController();
+        controller.celsius.setSelected(true);
+        controller.fahrenheit.setSelected(false);
+
+        //when
+        controller.getWeather();
+
+        // then
+        verify(controller.celsius).setSelected(true);
+        verify(controller.fahrenheit).setSelected(false);
+    }
+
+    @Test
+    public void imperialUnits_getWeather() {
+        // given
+        givenOpenWeatherMapController();
+        controller.celsius.setSelected(false);
+        controller.fahrenheit.setSelected(true);
+
+        //when
+        controller.getWeather();
+
+        // then
+        verify(controller.celsius).setSelected(false);
+        verify(controller.fahrenheit).setSelected(true);
 
     }
 
+    @Test
+    public void getCurrentWeather_getWeather() {
+        // given
+        givenOpenWeatherMapController();
+        OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
+        OpenWeatherMapService service = factory.newInstance();
+        controller.enterLocation.setText("New York");
+        controller.fahrenheit.setSelected(true);
+
+        //when
+        service.getCurrentWeather(controller.enterLocation.toString(), controller.fahrenheit.toString());
+
+        //verify
+
+
+    } // to implement
+
+    @Test
+    public void getWeatherForecast_getWeather() {
+        // given
+        givenOpenWeatherMapController();
+        OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
+        OpenWeatherMapService service = factory.newInstance();
+        controller.enterLocation.setText("New York");
+        controller.fahrenheit.setSelected(true);
+
+        //when
+        service.getCurrentWeather(controller.enterLocation.toString(), controller.fahrenheit.toString());
+
+        //verify
+
+    } // to implement
+
+    @Test
+    public void onOpenWeatherMapFeed() {
+        // given
+        givenOpenWeatherMapController();
+        OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
+        OpenWeatherMapService service = factory.newInstance();
+
+
+        //when
+        OpenWeatherMapFeed feed = service.getCurrentWeather(controller.enterLocation.toString(),
+                controller.fahrenheit.toString())
+                .blockingGet();
+
+
+        // then
+    } // to implement
+    @Test
     public void onOpenWeatherMapForecast() {
 
-    }
+    } // to implement 
 }
 

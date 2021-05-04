@@ -107,7 +107,7 @@ public class OpenWeatherMapController {
 
     public void onError(Throwable throwable) {
         // this is not the correct way to handle errors
-        System.out.println("error in retrieving weather data");
+        System.out.println("error retrieving weather data");
     }
 
 
