@@ -92,18 +92,25 @@ public class OpenWeatherMapControllerTest {
     public void getCurrentWeather_getWeather() {
         // given
         givenOpenWeatherMapController();
+
+        controller.celsius.setSelected(false);
+        controller.fahrenheit.setSelected(true);
+        controller.enterLocation.setText("New York");
+
+        String units = controller.celsius.isSelected() ? "metric" : "imperial";
+
         OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
         OpenWeatherMapService service = factory.newInstance();
-        controller.enterLocation.setText("New York");
-        controller.fahrenheit.setSelected(true);
+        OpenWeatherMapFeed feed = service.getCurrentWeather(controller.enterLocation.toString(), units)
+                .blockingGet();
 
         //when
-        service.getCurrentWeather(controller.enterLocation.toString(), controller.fahrenheit.toString());
+        controller.getWeather();
 
         //verify
+//        verify(       ).onOpenWeatherMapFeed(feed);
 
-
-    } // to implement
+    }
 
     @Test
     public void getWeatherForecast_getWeather() {
@@ -140,6 +147,6 @@ public class OpenWeatherMapControllerTest {
     @Test
     public void onOpenWeatherMapForecast() {
 
-    } // to implement 
+    } // to implement
 }
 
