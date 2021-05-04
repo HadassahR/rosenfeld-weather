@@ -10,52 +10,49 @@
     <top>
         <ToolBar minWidth="500">
             <HBox alignment="TOP_CENTER" spacing="3">
-                <RadioButton fx:id="celsius" text="celsius" onMouseClicked="#changeUnit"/>
-                <RadioButton fx:id="fahrenheit" text="fahrenheit" onMouseClicked="#changeUnit"/>
+                <RadioButton fx:id="celsius" text="celsius"/>
+                <RadioButton fx:id="fahrenheit" text="fahrenheit"/>
                 <TextField fx:id="enterLocation"/>
                 <Button fx:id="changeLocation" text="Get Weather" onAction="#getWeather"/>
-                <Label fx:id="currentLocation"/>
-                <fx:define>
-                    <ArrayList fx:id="units">
-                        <fx:reference source="celsius"/>
-                        <fx:reference source="fahrenheit"/>
-                    </ArrayList>
-                </fx:define>
             </HBox>
         </ToolBar>
     </top>
 
     <center>
         <VBox alignment="CENTER">
-            <Label fx:id="currentDateTime"/>
-            <Label fx:id="currentTemp"/>
             <ImageView fx:id="currentIcon"/>
+            <Label fx:id="currentDay"/>
+            <Label fx:id="currentTemp"/>
         </VBox>
     </center>
 
     <bottom>
-        <GridPane alignment="CENTER" hgap="25" vgap="15">
+        <GridPane alignment="CENTER" hgap="16" vgap="4">
 
-            <Label fx:id="day1" textAlignment="center" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-            <Label fx:id="day2" textAlignment="center" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
-            <Label fx:id="day3" textAlignment="center" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
-            <Label fx:id="day4" textAlignment="center" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
-            <Label fx:id="day5" textAlignment="center" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+            <ImageView fx:id="day1icon" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+            <ImageView fx:id="day2icon" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+            <ImageView fx:id="day3icon" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <ImageView fx:id="day4icon" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+            <ImageView fx:id="day5icon" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
 
-            <Label fx:id="day1temp" textAlignment="center" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-            <Label fx:id="day2temp" textAlignment="center" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-            <Label fx:id="day3temp" textAlignment="center" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
-            <Label fx:id="day4temp" textAlignment="center" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
-            <Label fx:id="day5temp" textAlignment="center" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+            <Label fx:id="day1" textAlignment="center" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label fx:id="day2" textAlignment="center" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label fx:id="day3" textAlignment="center" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <Label fx:id="day4" textAlignment="center" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+            <Label fx:id="day5" textAlignment="center" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
 
-            <ImageView fx:id="day1icon" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-            <ImageView fx:id="day2icon" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-            <ImageView fx:id="day3icon" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
-            <ImageView fx:id="day4icon" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
-            <ImageView fx:id="day5icon" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+            <Label fx:id="day1temp" textAlignment="center" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+            <Label fx:id="day2temp" textAlignment="center" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+            <Label fx:id="day3temp" textAlignment="center" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            <Label fx:id="day4temp" textAlignment="center" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+            <Label fx:id="day5temp" textAlignment="center" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
 
 
             <fx:define>
+                <ArrayList fx:id="units">
+                    <fx:reference source="celsius"/>
+                    <fx:reference source="fahrenheit"/>
+                </ArrayList>
                 <ArrayList fx:id="days">
                     <fx:reference source="day1"/>
                     <fx:reference source="day2"/>
@@ -77,9 +74,7 @@
                     <fx:reference source="day4temp"/>
                     <fx:reference source="day5temp"/>
                 </ArrayList>
-
             </fx:define>
-
         </GridPane>
     </bottom>
 

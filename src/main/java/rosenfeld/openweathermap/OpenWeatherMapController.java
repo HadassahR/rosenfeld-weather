@@ -3,15 +3,10 @@ package rosenfeld.openweathermap;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,9 +15,7 @@ public class OpenWeatherMapController {
 
 
     @FXML
-    RadioButton celsius;
-    @FXML
-    RadioButton fahrenheit;
+    RadioButton celsius, fahrenheit;
     @FXML
     List<RadioButton> units;
     final ToggleGroup unitGroup = new ToggleGroup();
@@ -31,11 +24,7 @@ public class OpenWeatherMapController {
     @FXML
     Button changeLocation;
     @FXML
-    Label currentLocation;
-    @FXML
-    Label currentTemp;
-    @FXML
-    Label currentDateTime;
+    Label currentTemp, currentDay;
     @FXML
     ImageView currentIcon;
     @FXML
@@ -47,15 +36,18 @@ public class OpenWeatherMapController {
 
 
     public void initialize() {
-        initializeRadioButtons();
-
+        for (RadioButton u : units) {
+            u.setToggleGroup(unitGroup);
+        }
+        celsius.setSelected(true);
     }
 
     public void getWeather() {
+        String units = celsius.isSelected() ? "metric" : "imperial";
         OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
         OpenWeatherMapService service = factory.newInstance();
 
-        Disposable disposableFeed = service.getCurrentWeather(enterLocation.getText(), "imperial")
+        Disposable disposableFeed = service.getCurrentWeather(enterLocation.getText(), units)
                 // request the data in the background
                 .subscribeOn(Schedulers.io())
                 // work with the data in the foreground
@@ -63,7 +55,7 @@ public class OpenWeatherMapController {
                 // work with the feed whenever it gets downloaded
                 .subscribe(this::onOpenWeatherMapFeed, this::onError);
 
-        Disposable disposableForecast = service.getWeatherForecast(enterLocation.getText(), "imperial")
+        Disposable disposableForecast = service.getWeatherForecast(enterLocation.getText(), units)
                 // request the data in the background
                 .subscribeOn(Schedulers.io())
                 // work with the data in the foreground
@@ -76,10 +68,9 @@ public class OpenWeatherMapController {
         Platform.runLater(new Runnable() {
 
             @Override
-            public void run() {
-                currentLocation.setText(enterLocation.getText());
+                public void run() {
                 currentTemp.setText(String.valueOf(feed.main.temp));
-                currentDateTime.setText(String.valueOf(feed.getTime()));
+                currentDay.setText("Current Weather");
                 currentIcon.setImage(new Image(feed.weather.get(0).getIconUrl()));
             }
         });
@@ -87,50 +78,37 @@ public class OpenWeatherMapController {
 
     public void onOpenWeatherMapForecast(OpenWeatherMapForecast forecast) {
         Platform.runLater(new Runnable() {
-
             @Override
             public void run() {
-                for (int ix = 0; ix < daysTemp.size(); ix++) {
-                    daysTemp.get(ix).setText(String.valueOf(forecast.getForecastFor(ix).main.temp));
+
+                int day = 1;
+                for(Label textLabel : days) {
+                    String date = forecast.getForecastFor(day).getDate().toString();
+                    textLabel.setText(date.substring(0, date.indexOf("11")));
+                    day++;
                 }
 
-                for (int ix = 0; ix < days.size(); ix ++) {
-                    String day = forecast.getForecastFor(ix).getDate().toString();
-                    days.get(ix).setText(day.substring(0, day.indexOf(" ")));
+                day = 1;
+                for(Label weatherLabel : daysTemp) {
+                    weatherLabel.setText(String.valueOf(forecast.getForecastFor(day).main.temp));
+                    day++;
                 }
 
-//                for (int ix = 0; ix < daysIcon.size(); ix++) {
-//                    daysIcon.get(ix).setImage(new Image(forecast.getForecastFor(ix).weather.get(ix).getIconUrl()));
-//                }
+                day = 1;
+                for (ImageView icon : daysIcon) {
+                    icon.setImage(new Image(forecast.getForecastFor(day).weather.get(0).getIconUrl()));
+                    day++;
+                }
+
             }
         });
-
-
-
-
-
 
     }
 
     public void onError(Throwable throwable) {
         // this is not the correct way to handle errors
-        System.out.println("error occurred");
+        System.out.println("error in retrieving weather data");
     }
 
-    private void initializeRadioButtons() {
-        for (RadioButton u : units) {
-            u.setToggleGroup(unitGroup);
-        }
-        celsius.setSelected(true);
-    }
-
-    public void changeUnit(MouseEvent mouseEvent) {
-        // Check which unit is selected
-        if (celsius.isSelected()) {
-            // change to metric
-        } else if (fahrenheit.isSelected()) {
-            // change to imperial
-        }
-    }
 
 }
