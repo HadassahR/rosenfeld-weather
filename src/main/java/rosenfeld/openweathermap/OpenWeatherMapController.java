@@ -77,9 +77,10 @@ public class OpenWeatherMapController {
 
             @Override
             public void run() {
-                currentLocation.setText("New York");
+                currentLocation.setText(enterLocation.getText());
                 currentTemp.setText(String.valueOf(feed.main.temp));
                 currentDateTime.setText(String.valueOf(feed.getTime()));
+                currentIcon.setImage(new Image(feed.weather.get(0).getIconUrl()));
             }
         });
     }
