@@ -93,19 +93,22 @@ public class OpenWeatherMapController {
                 for (int ix = 0; ix < daysTemp.size(); ix++) {
                     daysTemp.get(ix).setText(String.valueOf(forecast.getForecastFor(ix).main.temp));
                 }
+
+                for (int ix = 0; ix < days.size(); ix ++) {
+                    String day = forecast.getForecastFor(ix).getDate().toString();
+                    days.get(ix).setText(day.substring(0, day.indexOf(" ")));
+                }
+
 //                for (int ix = 0; ix < daysIcon.size(); ix++) {
 //                    daysIcon.get(ix).setImage(new Image(forecast.getForecastFor(ix).weather.get(ix).getIconUrl()));
 //                }
             }
         });
 
-//
-//        for (int ix = 0; ix < days.size(); ix ++) {
-//            String day = forecast.getForecastFor(ix).getDate().toString();
-//            days.get(ix).setText(day.substring(0, day.indexOf(" ")));
-//        }
-//
-//
+
+
+
+
 
     }
 
