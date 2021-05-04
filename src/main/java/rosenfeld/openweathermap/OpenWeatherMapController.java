@@ -68,7 +68,7 @@ public class OpenWeatherMapController {
         Platform.runLater(new Runnable() {
 
             @Override
-                public void run() {
+            public void run() {
                 currentTemp.setText(String.valueOf(feed.main.temp));
                 currentDay.setText("Current Weather");
                 currentIcon.setImage(new Image(feed.weather.get(0).getIconUrl()));
@@ -82,14 +82,14 @@ public class OpenWeatherMapController {
             public void run() {
 
                 int day = 1;
-                for(Label textLabel : days) {
+                for (Label textLabel : days) {
                     String date = forecast.getForecastFor(day).getDate().toString();
                     textLabel.setText(date.substring(0, date.indexOf("11")));
                     day++;
                 }
 
                 day = 1;
-                for(Label weatherLabel : daysTemp) {
+                for (Label weatherLabel : daysTemp) {
                     weatherLabel.setText(String.valueOf(forecast.getForecastFor(day).main.temp));
                     day++;
                 }

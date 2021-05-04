@@ -1,6 +1,8 @@
 package rosenfeld.openweathermap;
 
+import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import org.junit.BeforeClass;
@@ -99,54 +101,38 @@ public class OpenWeatherMapControllerTest {
 
         String units = controller.celsius.isSelected() ? "metric" : "imperial";
 
-        OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
-        OpenWeatherMapService service = factory.newInstance();
-        OpenWeatherMapFeed feed = service.getCurrentWeather(controller.enterLocation.toString(), units)
-                .blockingGet();
+        OpenWeatherMapServiceFactory factory = mock(OpenWeatherMapServiceFactory.class);
+        OpenWeatherMapService service = mock(OpenWeatherMapService.class);
+        OpenWeatherMapFeed feed = mock(OpenWeatherMapFeed.class);
 
         //when
         controller.getWeather();
 
-        //verify
-//        verify(       ).onOpenWeatherMapFeed(feed);
-
+        // then - something to verify that onOpenWeatherFeed is called
+        verify(service).getCurrentWeather(controller.enterLocation.toString(), units);
     }
 
     @Test
-    public void getWeatherForecast_getWeather() {
+    public void onOpenWeatherMapFeed(){
         // given
         givenOpenWeatherMapController();
-        OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
-        OpenWeatherMapService service = factory.newInstance();
-        controller.enterLocation.setText("New York");
-        controller.fahrenheit.setSelected(true);
+        OpenWeatherMapFeed feed = mock(OpenWeatherMapFeed.class);
+        feed.main = mock(OpenWeatherMapFeed.Main.class);
+        feed.main.temp = 67.5;
+        feed.weather = Arrays.asList(
+                mock(OpenWeatherMapFeed.Weather.class),
+                mock(OpenWeatherMapFeed.Weather.class)
+        );
 
-        //when
-        service.getCurrentWeather(controller.enterLocation.toString(), controller.fahrenheit.toString());
-
-        //verify
-
-    } // to implement
-
-    @Test
-    public void onOpenWeatherMapFeed() {
-        // given
-        givenOpenWeatherMapController();
-        OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
-        OpenWeatherMapService service = factory.newInstance();
+        doReturn("67.5").when(controller.currentTemp).getText();
 
 
-        //when
-        OpenWeatherMapFeed feed = service.getCurrentWeather(controller.enterLocation.toString(),
-                controller.fahrenheit.toString())
-                .blockingGet();
+        // when
+        controller.onOpenWeatherMapFeed(feed);
 
+        //then
+        verify(controller.currentTemp).setText(String.valueOf(feed.main.temp));
+    }
 
-        // then
-    } // to implement
-    @Test
-    public void onOpenWeatherMapForecast() {
-
-    } // to implement
 }
 
