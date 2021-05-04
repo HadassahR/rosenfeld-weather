@@ -11,8 +11,9 @@ public interface OpenWeatherMapService {
             @Query("q") String location,
             @Query("units") String units);
 
-    @GET("data/2.5/forecast?appid=248bda26f84412a243d9772c10198b1c")
+    @GET("http://api.openweathermap.org/data/2.5/forecast?appid=248bda26f84412a243d9772c10198b1c")
     Single<OpenWeatherMapForecast> getWeatherForecast(
             @Query("q") String location,
-            @Query("units") String units);
+            @Query("units") String units
+    );
 }

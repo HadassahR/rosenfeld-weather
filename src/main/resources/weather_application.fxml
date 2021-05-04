@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.util.ArrayList?>
+<?import javafx.scene.image.ImageView?>
+<BorderPane fx:controller="rosenfeld.openweathermap.OpenWeatherMapController"
+            stylesheets="@weather.css"
+            xmlns:fx="http://javafx.com/fxml" prefHeight="500" prefWidth="500">
+    <top>
+        <ToolBar minWidth="500">
+            <HBox alignment="TOP_CENTER" spacing = "3">
+                <RadioButton fx:id="celsius" text="celsius" onMouseClicked="#changeUnit"/>
+                <RadioButton fx:id="fahrenheit" text="fahrenheit" onMouseClicked="#changeUnit"/>
+                <TextField fx:id="enterLocation"/>
+                <Button fx:id="changeLocation" text="Get Weather" onAction="#getWeather"/>
+                <Label fx:id="currentLocation"/>
+                <fx:define>
+                    <ArrayList fx:id="units">
+                        <fx:reference source="celsius"/>
+                        <fx:reference source="fahrenheit"/>
+                    </ArrayList>
+                </fx:define>
+            </HBox>
+        </ToolBar>
+    </top>
+
+<center>
+    <VBox alignment="CENTER">
+        <Label fx:id = "currentDateTime"/>
+        <Label fx:id="currentTemp"/>
+        <ImageView fx:id="currentIcon"/>
+    </VBox>
+</center>
+
+    <bottom>
+        <GridPane alignment="CENTER" hgap="25" vgap="15">
+
+            <Label fx:id = "day1" text = "day 1" textAlignment="center"  GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <Label fx:id = "day2" text = "day 2" textAlignment="center"  GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            <Label fx:id = "day3" text = "day 3" textAlignment="center" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+            <Label fx:id = "day4" text = "day 4" textAlignment="center" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+            <Label fx:id = "day5" text = "day 5" textAlignment="center" GridPane.columnIndex="4" GridPane.rowIndex="0"/>
+
+            <Label fx:id = "day1temp" textAlignment="center"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+            <Label fx:id = "day2temp" textAlignment="center"  GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+            <Label fx:id = "day3temp" textAlignment="center" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+            <Label fx:id = "day4temp" textAlignment="center" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+            <Label fx:id = "day5temp" textAlignment="center" GridPane.columnIndex="4" GridPane.rowIndex="1"/>
+
+            <ImageView fx:id = "day1icon" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <ImageView fx:id = "day2icon" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <ImageView fx:id = "day3icon" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+            <ImageView fx:id = "day4icon" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+            <ImageView fx:id = "day5icon" GridPane.columnIndex="4" GridPane.rowIndex="2"/>
+
+
+            <fx:define>
+                <ArrayList fx:id="days">
+                    <fx:reference source="day1"/>
+                    <fx:reference source="day2"/>
+                    <fx:reference source="day3"/>
+                    <fx:reference source="day4"/>
+                    <fx:reference source="day5"/>
+                </ArrayList>
+                <ArrayList fx:id="daysIcon">
+                    <fx:reference source="day1icon"/>
+                    <fx:reference source="day2icon"/>
+                    <fx:reference source="day3icon"/>
+                    <fx:reference source="day4icon"/>
+                    <fx:reference source="day5icon"/>
+                </ArrayList>
+                <ArrayList fx:id="daysTemp">
+                    <fx:reference source="day1temp"/>
+                    <fx:reference source="day2temp"/>
+                    <fx:reference source="day3temp"/>
+                    <fx:reference source="day4temp"/>
+                    <fx:reference source="day5temp"/>
+                </ArrayList>
+
+            </fx:define>
+
+        </GridPane>
+    </bottom>
+
+
+
+</BorderPane>
