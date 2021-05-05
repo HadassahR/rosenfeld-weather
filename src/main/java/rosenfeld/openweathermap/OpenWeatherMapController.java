@@ -34,7 +34,11 @@ public class OpenWeatherMapController {
     @FXML
     ArrayList<ImageView> daysIcon;
 
+    private final OpenWeatherMapService service;
 
+    public OpenWeatherMapController(OpenWeatherMapService service) {
+        this.service = service;
+    }
     public void initialize() {
         for (RadioButton u : units) {
             u.setToggleGroup(unitGroup);
@@ -44,8 +48,6 @@ public class OpenWeatherMapController {
 
     public void getWeather() {
         String units = celsius.isSelected() ? "metric" : "imperial";
-        OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
-        OpenWeatherMapService service = factory.newInstance();
 
         Disposable disposableFeed = service.getCurrentWeather(enterLocation.getText(), units)
                 // request the data in the background
@@ -106,8 +108,7 @@ public class OpenWeatherMapController {
     }
 
     public void onError(Throwable throwable) {
-        // this is not the correct way to handle errors
-        System.out.println("error retrieving weather data");
+        throwable.printStackTrace();
     }
 
 

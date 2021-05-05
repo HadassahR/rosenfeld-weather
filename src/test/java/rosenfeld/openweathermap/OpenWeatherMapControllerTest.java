@@ -1,10 +1,12 @@
 package rosenfeld.openweathermap;
 
+import io.reactivex.rxjava3.core.Single;
 import io.reactivex.rxjava3.disposables.Disposable;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -17,6 +19,7 @@ import static org.mockito.Mockito.*;
 public class OpenWeatherMapControllerTest {
 
     private OpenWeatherMapController controller;
+    OpenWeatherMapService service;
 
     @BeforeClass
     public static void beforeClass() {
@@ -26,9 +29,10 @@ public class OpenWeatherMapControllerTest {
 
     private void givenOpenWeatherMapController() {
         OpenWeatherMapServiceFactory factory = new OpenWeatherMapServiceFactory();
-        OpenWeatherMapService service = factory.newInstance();
+        OpenWeatherMapService svc = factory.newInstance();
 
-        controller = new OpenWeatherMapController();
+        service = mock(OpenWeatherMapService.class);
+        controller = new OpenWeatherMapController(service);
         controller.celsius = mock(RadioButton.class);
         controller.fahrenheit = mock(RadioButton.class);
         controller.enterLocation = mock(TextField.class);
@@ -57,6 +61,22 @@ public class OpenWeatherMapControllerTest {
         verify(controller.units.get(0)).setToggleGroup(controller.unitGroup);
         verify(controller.units.get(1)).setToggleGroup(controller.unitGroup);
         verify(controller.celsius).setSelected(true);
+    }
+
+    @Test
+    public void getCurrentWeather() {
+        // given
+        givenOpenWeatherMapController();
+        doReturn(Single.never()).when(service).getCurrentWeather("New York", "imperial");
+        doReturn(Single.never()).when(service).getWeatherForecast("New York", "imperial");
+        doReturn("New York").when(controller.enterLocation).getText();
+        doReturn(true).when(controller.units.get(1)).isSelected();
+
+        // when
+        controller.getWeather();
+
+        // then
+        verify(service).getCurrentWeather("New York", "imperial");
     }
 
     @Test
@@ -91,7 +111,7 @@ public class OpenWeatherMapControllerTest {
     }
 
     @Test
-    public void onOpenWeatherMapFeed(){
+    public void onOpenWeatherMapFeed() {
         // given
         givenOpenWeatherMapController();
         OpenWeatherMapFeed feed = mock(OpenWeatherMapFeed.class);

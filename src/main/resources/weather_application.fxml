@@ -4,9 +4,9 @@
 <?import javafx.scene.layout.*?>
 <?import java.util.ArrayList?>
 <?import javafx.scene.image.ImageView?>
-<BorderPane fx:controller="rosenfeld.openweathermap.OpenWeatherMapController"
-            stylesheets="@weather.css"
-            xmlns:fx="http://javafx.com/fxml" prefHeight="500" prefWidth="500">
+<BorderPane
+        stylesheets="@weather.css"
+        xmlns:fx="http://javafx.com/fxml" prefHeight="500" prefWidth="500">
     <top>
         <ToolBar minWidth="500">
             <HBox alignment="TOP_CENTER" spacing="3">
