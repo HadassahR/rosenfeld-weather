@@ -5,6 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -134,18 +135,19 @@ public class OpenWeatherMapControllerTest {
         );
 
         doReturn("67.5").when(controller.currentTemp).getText();
-        doReturn("Current Weather").when(controller.currentDay).getText();
-//        doReturn().when(controller.currentIcon).getImage();
+        doReturn("Current Day").when(controller.currentDay).getText();
+        doReturn("http://openweathermap.org/img/wn/04n@2x.png").when(feed.weather.get(0)).getIconUrl();
         controller.currentTemp.setText("67.5");
         controller.currentDay.setText("Current Day");
+        controller.currentIcon.setImage(new Image("http://openweathermap.org/img/wn/04n@2x.png"));
 
         // when
         controller.onOpenWeatherMapFeed(feed);
 
         //then
         verify(controller.currentTemp).setText(String.valueOf(feed.main.temp));
-        verify(controller.currentDay).setText("Current Weather");
-//        verify(controller.currentIcon).setImage(new Image(feed.weather.get(0).getIconUrl()));
+        verify(controller.currentDay).setText("Current Day");
+        verify(controller.currentIcon).setImage(any(Image.class));
     }
 
 }
