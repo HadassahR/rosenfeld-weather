@@ -10,8 +10,10 @@ import javafx.scene.image.ImageView;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import static org.mockito.Mockito.*;
 
@@ -48,6 +50,9 @@ public class OpenWeatherMapControllerTest {
                 mock(RadioButton.class));
     }
 
+    /*
+    Tests that radio buttons were initialized to ToggleGroup
+     */
     @Test
     public void initialize() {
         //given
@@ -62,6 +67,10 @@ public class OpenWeatherMapControllerTest {
         verify(controller.celsius).setSelected(true);
     }
 
+
+    /*
+    Tests that when service.getCurrentWeather() and service.getCurrentForecast() are called when getWeather() is called
+ */
     @Test
     public void getCurrentWeather() {
         // given
@@ -78,6 +87,10 @@ public class OpenWeatherMapControllerTest {
         verify(service).getCurrentWeather("New York", "imperial");
     }
 
+    /*
+    Tests that when metric units are selected and getWeather is called, Celsius is true
+    and Fahrenheit is false.
+     */
     @Test
     public void metricUnits_getWeather() {
 
@@ -100,6 +113,10 @@ public class OpenWeatherMapControllerTest {
         verify(controller.fahrenheit).setSelected(false);
     }
 
+    /*
+    Tests that when metric units are selected and getWeather is called, Fahrenheit is true
+    and Celsius is false.
+ */
     @Test
     public void imperialUnits_getWeather() {
         // given
@@ -122,6 +139,9 @@ public class OpenWeatherMapControllerTest {
 
     }
 
+    /*
+     * Tests that when onOpenWeatherMapFeed is called, the text fields are populated with values/icon
+     */
     @Test
     public void onOpenWeatherMapFeed() {
         // given
@@ -137,6 +157,7 @@ public class OpenWeatherMapControllerTest {
         doReturn("67.5").when(controller.currentTemp).getText();
         doReturn("Current Day").when(controller.currentDay).getText();
         doReturn("http://openweathermap.org/img/wn/04n@2x.png").when(feed.weather.get(0)).getIconUrl();
+
         controller.currentTemp.setText("67.5");
         controller.currentDay.setText("Current Day");
         controller.currentIcon.setImage(new Image("http://openweathermap.org/img/wn/04n@2x.png"));
@@ -149,6 +170,7 @@ public class OpenWeatherMapControllerTest {
         verify(controller.currentDay).setText("Current Day");
         verify(controller.currentIcon).setImage(any(Image.class));
     }
+
 
 }
 
