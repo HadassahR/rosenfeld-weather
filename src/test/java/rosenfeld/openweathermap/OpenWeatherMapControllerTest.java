@@ -1,19 +1,17 @@
 package rosenfeld.openweathermap;
 
 import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.disposables.Disposable;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.*;
 
 public class OpenWeatherMapControllerTest {
@@ -81,8 +79,15 @@ public class OpenWeatherMapControllerTest {
 
     @Test
     public void metricUnits_getWeather() {
+
         // given
         givenOpenWeatherMapController();
+        doReturn(Single.never()).when(service).getCurrentWeather("New York", "imperial");
+        doReturn(Single.never()).when(service).getWeatherForecast("New York", "imperial");
+        doReturn("New York").when(controller.enterLocation).getText();
+        doReturn(true).when(controller.units.get(0)).isSelected();
+
+
         controller.celsius.setSelected(true);
         controller.fahrenheit.setSelected(false);
 
@@ -98,6 +103,12 @@ public class OpenWeatherMapControllerTest {
     public void imperialUnits_getWeather() {
         // given
         givenOpenWeatherMapController();
+        doReturn(Single.never()).when(service).getCurrentWeather("New York", "imperial");
+        doReturn(Single.never()).when(service).getWeatherForecast("New York", "imperial");
+        doReturn("New York").when(controller.enterLocation).getText();
+        doReturn(true).when(controller.units.get(1)).isSelected();
+
+
         controller.celsius.setSelected(false);
         controller.fahrenheit.setSelected(true);
 
@@ -123,36 +134,20 @@ public class OpenWeatherMapControllerTest {
         );
 
         doReturn("67.5").when(controller.currentTemp).getText();
-
+        doReturn("Current Weather").when(controller.currentDay).getText();
+//        doReturn().when(controller.currentIcon).getImage();
+        controller.currentTemp.setText("67.5");
+        controller.currentDay.setText("Current Day");
 
         // when
         controller.onOpenWeatherMapFeed(feed);
 
         //then
         verify(controller.currentTemp).setText(String.valueOf(feed.main.temp));
+        verify(controller.currentDay).setText("Current Weather");
+//        verify(controller.currentIcon).setImage(new Image(feed.weather.get(0).getIconUrl()));
     }
 
-
-    //    @Test
-//    public void getCurrentWeather_getWeather() {
-//        // given
-//        givenOpenWeatherMapController();
-//
-//        controller.celsius.setSelected(false);
-//        controller.fahrenheit.setSelected(true);
-//        controller.enterLocation.setText("New York");
-//
-//        String units = controller.celsius.isSelected() ? "metric" : "imperial";
-//
-//        OpenWeatherMapServiceFactory factory = mock(OpenWeatherMapServiceFactory.class);
-//        OpenWeatherMapService service = mock(OpenWeatherMapService.class);
-//        OpenWeatherMapFeed feed = mock(OpenWeatherMapFeed.class);
-//
-//        //when
-//        controller.getWeather();
-//
-//        // then - something to verify that onOpenWeatherFeed is called
-//        verify(service).getCurrentWeather(controller.enterLocation.toString(), units);
-//    }
 }
+
 

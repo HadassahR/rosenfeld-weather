@@ -39,6 +39,7 @@ public class OpenWeatherMapController {
     public OpenWeatherMapController(OpenWeatherMapService service) {
         this.service = service;
     }
+
     public void initialize() {
         for (RadioButton u : units) {
             u.setToggleGroup(unitGroup);
@@ -67,43 +68,39 @@ public class OpenWeatherMapController {
     }
 
     public void onOpenWeatherMapFeed(OpenWeatherMapFeed feed) {
-        Platform.runLater(new Runnable() {
+        Platform.runLater(() -> onOpenWeatherMapFeedRunLater(feed));
+    }
 
-            @Override
-            public void run() {
-                currentTemp.setText(String.valueOf(feed.main.temp));
-                currentDay.setText("Current Weather");
-                currentIcon.setImage(new Image(feed.weather.get(0).getIconUrl()));
-            }
-        });
+    public void onOpenWeatherMapFeedRunLater(OpenWeatherMapFeed feed) {
+        currentTemp.setText(String.valueOf(feed.main.temp));
+        currentDay.setText("Current Weather");
+        currentIcon.setImage(new Image(feed.weather.get(0).getIconUrl()));
     }
 
     public void onOpenWeatherMapForecast(OpenWeatherMapForecast forecast) {
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
+        Platform.runLater(() -> onOpenWeatherMapForecastRunLater(forecast));
+    }
 
-                int day = 1;
-                for (Label textLabel : days) {
-                    String date = forecast.getForecastFor(day).getDate().toString();
-                    textLabel.setText(date.substring(0, date.indexOf("11")));
-                    day++;
-                }
+    public void onOpenWeatherMapForecastRunLater(OpenWeatherMapForecast forecast) {
 
-                day = 1;
-                for (Label weatherLabel : daysTemp) {
-                    weatherLabel.setText(String.valueOf(forecast.getForecastFor(day).main.temp));
-                    day++;
-                }
+        int day = 1;
+        for (Label textLabel : days) {
+            String date = forecast.getForecastFor(day).getDate().toString();
+            textLabel.setText(date.substring(0, date.indexOf("11")));
+            day++;
+        }
 
-                day = 1;
-                for (ImageView icon : daysIcon) {
-                    icon.setImage(new Image(forecast.getForecastFor(day).weather.get(0).getIconUrl()));
-                    day++;
-                }
+        day = 1;
+        for (Label weatherLabel : daysTemp) {
+            weatherLabel.setText(String.valueOf(forecast.getForecastFor(day).main.temp));
+            day++;
+        }
 
-            }
-        });
+        day = 1;
+        for (ImageView icon : daysIcon) {
+            icon.setImage(new Image(forecast.getForecastFor(day).weather.get(0).getIconUrl()));
+            day++;
+        }
 
     }
 
